@@ -1,118 +1,79 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React from 'react';  
+import { NavigationContainer } from '@react-navigation/native';  
+import { createStackNavigator } from '@react-navigation/stack';  
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';  
+import { Button, View, Text } from 'react-native';  
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+// Create stack and tab navigators  
+const Stack = createStackNavigator();  
+const Tab = createBottomTabNavigator();  
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// Home Screen Component  
+const HomeScreen = ({ navigation }) => (  
+  <View style={styles.screenContainer}>  
+    <Text>Home Screen</Text>  
+    <Button title="Go to Feed" onPress={() => navigation.navigate('FeedTabs')} />  
+    <Button title="Go to Messages" onPress={() => navigation.navigate('FeedTabs', { screen: 'Messages' })} />
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  </View>  
+);  
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+// Profile Screen Component  
+const ProfileScreen = () => (  
+  <View style={styles.screenContainer}>  
+    <Text>Profile Screen</Text>  
+  </View>  
+);  
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+// Feed Screen Component  
+const FeedScreen = ({ navigation }) => (  
+  <View style={styles.screenContainer}>  
+    <Text>Feed Screen</Text>  
+    <Button title="Back to Home" onPress={() => navigation.navigate('HomeTabs')} />  
+  </View>  
+);  
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+// Messages Screen Component  
+const MessagesScreen = ({ navigation }) => (  
+  <View style={styles.screenContainer}>  
+    <Text>Messages Screen</Text>  
+    <Button title="Back to Home" onPress={() => navigation.navigate('HomeTabs')} />  
+  </View>  
+);  
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+// Home Tabs Navigator  
+const HomeTabs = () => (  
+  <Tab.Navigator>  
+    <Tab.Screen name="Home" component={HomeScreen} />  
+    <Tab.Screen name="Profile" component={ProfileScreen} />  
+  </Tab.Navigator>  
+);  
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+// Feed Tabs Navigator  
+const FeedTabs = () => (  
+  <Tab.Navigator>  
+    <Tab.Screen name="Feed" component={FeedScreen} />  
+    <Tab.Screen name="Messages" component={MessagesScreen} />  
+  </Tab.Navigator>  
+);  
+
+// Main App Component  
+const App = () => (  
+  <NavigationContainer>  
+    <Stack.Navigator screenOptions={{ headerShown: false }}>  
+      <Stack.Screen name="HomeTabs" component={HomeTabs} />  
+      <Stack.Screen name="FeedTabs" component={FeedTabs} />  
+    </Stack.Navigator>  
+  </NavigationContainer>  
+);  
+
+// Styles  
+const styles = {  
+  screenContainer: {  
+    flex: 1,  
+    justifyContent: 'center',  
+    alignItems: 'center',  
+  },  
+};  
 
 export default App;
